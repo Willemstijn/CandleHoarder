@@ -13,6 +13,8 @@ cd CandleHoarder
 virtualenv venv
 source venv/bin/activate
 
+# in windows:  source venv/Scripts/activate
+
 # Install packages for CandleHoarder
 pip install -r requirements.txt
 ```
