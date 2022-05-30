@@ -26,8 +26,8 @@ pip install -r requirements.txt
 File 'secret.py' should be made to contain confidential information. The format should be:
 
 ```
-api_key = ""
-api_secret = ""
+API_KEY = ""
+API_SECRET = ""
 
 ```
 
