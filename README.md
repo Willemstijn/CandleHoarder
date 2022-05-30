@@ -1,10 +1,23 @@
-Read: 
+# Installation and configuration requirements
 
-* https://python-binance.readthedocs.io/en/latest/overview.html
-* https://python-binance.readthedocs.io/en/latest/constants.html
+## Installation
 
-For information about the python-binance library.
+Create virtual environment:
 
+```
+# Install Python virtualenv software
+pip3 install virtualenv
+
+# Change to directory and create a virtual environment
+cd CandleHoarder
+virtualenv venv
+source venv/bin/activate
+
+# Install packages for CandleHoarder
+pip install -r requirements.txt
+```
+
+## Configuration
 
 ## secret file
 
@@ -17,3 +30,15 @@ api_secret = ""
 ```
 
 This file is not here by default but should be made manually.
+
+
+## Misc
+
+Read: 
+
+* https://python-binance.readthedocs.io/en/latest/overview.html
+* https://python-binance.readthedocs.io/en/latest/constants.html
+
+For information about the python-binance library.
+
+
