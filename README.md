@@ -29,6 +29,8 @@ cd CandleHoarder
 virtualenv venv
 source venv/bin/activate
 
+# in windows:  source venv/Scripts/activate
+
 # Install packages for CandleHoarder
 pip install -r requirements.txt
 ```
@@ -40,8 +42,8 @@ pip install -r requirements.txt
 File 'secret.py' should be made to contain confidential information. The format should be:
 
 ```
-api_key = ""
-api_secret = ""
+API_KEY = ""
+API_SECRET = ""
 
 ```
 
