@@ -20,5 +20,5 @@ time_frames = [
 ]
 
 # Binance keys - KEEP THIS SECRET!! -
-API_KEY = secrets.api_key
-API_SECRET = secrets.api_secret
+PI_KEY = ""
+API_SECRET = ""
