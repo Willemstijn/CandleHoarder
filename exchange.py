@@ -5,3 +5,4 @@
 import os
 import sqlite3
 from config import *
+from binance.client import Client

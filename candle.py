@@ -4,14 +4,87 @@
 # Import modules
 import os
 import sqlite3
+
+from time import time
 from config import *
 from database import add_record
+from datetime import datetime
 
+def download_candle_history(symbol, time_frame):
+    """This function fetches historical klines from exchange and enters the data in the database."""
+    # print(symbol, time_frame)
+    if time_frame == "1m":
+        interval = Client.KLINE_INTERVAL_1MINUTE
+    elif time_frame == "3m":
+        interval = Client.KLINE_INTERVAL_3MINUTE
+    elif time_frame == "5m":
+        interval = Client.KLINE_INTERVAL_5MINUTE
+    elif time_frame == "15m":
+        interval = Client.KLINE_INTERVAL_15MINUTE
+    elif time_frame == "30m":
+        interval = Client.KLINE_INTERVAL_30MINUTE
+    elif time_frame == "1h":
+        interval = Client.KLINE_INTERVAL_1HOUR
+    elif time_frame == "4h":
+        interval = Client.KLINE_INTERVAL_4HOUR
+    elif time_frame == "6h":
+        interval = Client.KLINE_INTERVAL_6HOUR
+    elif time_frame == "8h":
+        interval = Client.KLINE_INTERVAL_8HOUR
+    elif time_frame == "12h":
+        interval = Client.KLINE_INTERVAL_12HOUR
+    elif time_frame == "1d":
+        interval = Client.KLINE_INTERVAL_1DAY
+    elif time_frame == "3d":
+        interval = Client.KLINE_INTERVAL_3DAY
+    elif time_frame == "1w":
+        interval = Client.KLINE_INTERVAL_1WEEK
+    elif time_frame == "1M":
+        interval = Client.KLINE_INTERVAL_1MONTH
 
-def download_candle_history():
-    pass
-    # Download candle data history amount set in config file
-
+    recent_candles = client.get_klines(symbol=symbol, interval=interval, limit=candle_history)
+    # print(len(recent_candles))
+    for i in range(len(recent_candles)):
+        print(i)
+    # print(type(candle_history))
+    # for i in range(candle_history-1):
+    # for i in range(recent_candles-1):
+    #     print("recent_candles")
+    # Assign candle values to variables
+    # for recent_candle in recent_candles:
+    #     openTime = recent_candle[0] // 1000
+    #     open = recent_candle[1]
+    #     high = recent_candle[2]
+    #     low = recent_candle[3]
+    #     close = recent_candle[4]
+    #     volume = recent_candle[5]
+    #     closeTime = recent_candle[6] // 1000
+    #     quoteAssetVolume = recent_candle[7]
+    #     numberOfTrades = recent_candle[8]
+    #     takerBuyBaseAssetVolume = recent_candle[9]
+    #     takerBuyQuoteAssetVolume = recent_candle[10]
+    #     ignore = recent_candle[11]
+    #     dow = datetime.fromtimestamp(openTime).strftime("%A")
+    #     # print(datetime.fromtimestamp(openTime).strftime("%A"))
+    #     print(open, dow)
+        # Create an entry in the specific database table
+        # add_record(
+        #     symbol,
+        #     time_frame,
+        #     openTime,
+        #     open,
+        #     high,
+        #     low,
+        #     close,
+        #     volume,
+        #     closeTime,
+        #     quoteAssetVolume,
+        #     numberOfTrades,
+        #     takerBuyBaseAssetVolume,
+        #     takerBuyQuoteAssetVolume,
+        #     ignore,
+        #     dow,
+        # )
 
 def check_candle_data(symbol, time_frame):
     """
@@ -42,6 +115,7 @@ def check_candle_data(symbol, time_frame):
         # No data in database. Make placeholder label. Then fetch all missing data from the exchange.
         last_entry = 0
         print("Last entry is: " + str(last_entry) + "\nFetching historical data.")
+        download_candle_history(symbol, time_frame)
     conn.commit()
     conn.close()
 
