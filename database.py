@@ -15,7 +15,7 @@ def create_table(symbol, time_frame):
     c.execute(
         "CREATE TABLE "
         + db_time_frame
-        + "(openTime integer PRIMARY KEY,open integer,high real,low real,close real,volume integer,closeTime integer,quoteAssetVolume integer,numberOfTrades integer,takerBuyBaseAssetVolume integer,takerBuyQuoteAssetVolume integer,ignore text, dow text)"
+        + "(openTime integer PRIMARY KEY,open integer,high real,low real,close real,volume integer,closeTime integer,quoteAssetVolume integer,numberOfTrades integer,takerBuyBaseAssetVolume integer,takerBuyQuoteAssetVolume integer,ignore text, dow text, color text)"
     )
     print(f"Table {symbol} {time_frame} created.")
     conn.commit()
@@ -78,6 +78,7 @@ def add_record(
     takerBuyQuoteAssetVolume,
     ignore,
     dow,
+    color,
 ):
     """This function is used to add a new record to the symbols database.
     Args:
@@ -98,25 +99,9 @@ def add_record(
     conn = sqlite3.connect(data_location + symbol + ".db")
     db_time_frame = "_" + time_frame
     c = conn.cursor()
-    # print(
-    #     symbol,
-    #     time_frame,
-    #     openTime,
-    #     open,
-    #     high,
-    #     low,
-    #     close,
-    #     volume,
-    #     closeTime,
-    #     quoteAssetVolume,
-    #     numberOfTrades,
-    #     takerBuyBaseAssetVolume,
-    #     takerBuyQuoteAssetVolume,
-    #     ignore,
-    # )
     try:
         c.execute(
-            "INSERT INTO " + db_time_frame + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO " + db_time_frame + " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (
                 openTime,
                 open,
@@ -131,6 +116,7 @@ def add_record(
                 takerBuyQuoteAssetVolume,
                 ignore,
                 dow,
+                color,
             ),
         )
     except sqlite3.IntegrityError:

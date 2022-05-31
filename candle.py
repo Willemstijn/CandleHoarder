@@ -2,6 +2,7 @@
 # This file contains all candle data related functions.
 
 # Import modules
+from calendar import day_abbr, month
 import os
 import sqlite3
 
@@ -43,48 +44,49 @@ def download_candle_history(symbol, time_frame):
         interval = Client.KLINE_INTERVAL_1MONTH
 
     recent_candles = client.get_klines(symbol=symbol, interval=interval, limit=candle_history)
-    # print(len(recent_candles))
-    for i in range(len(recent_candles)):
-        print(i)
-    # print(type(candle_history))
-    # for i in range(candle_history-1):
-    # for i in range(recent_candles-1):
-    #     print("recent_candles")
+    # Pop last entry from list. This candle is not closed but active.
+    recent_candles.pop(-1)
+    print(recent_candles)
     # Assign candle values to variables
-    # for recent_candle in recent_candles:
-    #     openTime = recent_candle[0] // 1000
-    #     open = recent_candle[1]
-    #     high = recent_candle[2]
-    #     low = recent_candle[3]
-    #     close = recent_candle[4]
-    #     volume = recent_candle[5]
-    #     closeTime = recent_candle[6] // 1000
-    #     quoteAssetVolume = recent_candle[7]
-    #     numberOfTrades = recent_candle[8]
-    #     takerBuyBaseAssetVolume = recent_candle[9]
-    #     takerBuyQuoteAssetVolume = recent_candle[10]
-    #     ignore = recent_candle[11]
-    #     dow = datetime.fromtimestamp(openTime).strftime("%A")
-    #     # print(datetime.fromtimestamp(openTime).strftime("%A"))
-    #     print(open, dow)
+    for recent_candle in recent_candles:
+        openTime = recent_candle[0] // 1000
+        open = recent_candle[1]
+        high = recent_candle[2]
+        low = recent_candle[3]
+        close = recent_candle[4]
+        volume = recent_candle[5]
+        closeTime = recent_candle[6] // 1000
+        quoteAssetVolume = recent_candle[7]
+        numberOfTrades = recent_candle[8]
+        takerBuyBaseAssetVolume = recent_candle[9]
+        takerBuyQuoteAssetVolume = recent_candle[10]
+        ignore = recent_candle[11]
+        dow = datetime.fromtimestamp(openTime).strftime("%A")
+        if open > close:
+            color = "Red"
+        else:
+            color = "Green"
+        # print(datetime.fromtimestamp(openTime).strftime("%A")) # Check for correct day of week
+        # print(open, high, low, close, color, dow)
         # Create an entry in the specific database table
-        # add_record(
-        #     symbol,
-        #     time_frame,
-        #     openTime,
-        #     open,
-        #     high,
-        #     low,
-        #     close,
-        #     volume,
-        #     closeTime,
-        #     quoteAssetVolume,
-        #     numberOfTrades,
-        #     takerBuyBaseAssetVolume,
-        #     takerBuyQuoteAssetVolume,
-        #     ignore,
-        #     dow,
-        # )
+        add_record(
+            symbol,
+            time_frame,
+            openTime,
+            open,
+            high,
+            low,
+            close,
+            volume,
+            closeTime,
+            quoteAssetVolume,
+            numberOfTrades,
+            takerBuyBaseAssetVolume,
+            takerBuyQuoteAssetVolume,
+            ignore,
+            dow,
+            color,
+        )
 
 def check_candle_data(symbol, time_frame):
     """
