@@ -62,12 +62,13 @@ def download_candle_history(symbol, time_frame):
         takerBuyQuoteAssetVolume = recent_candle[10]
         ignore = recent_candle[11]
         dow = datetime.fromtimestamp(openTime).strftime("%A")
+        humandate = datetime.fromtimestamp(openTime).strftime("%Y%m%d")
         if open > close:
             color = "Red"
         else:
             color = "Green"
         # print(datetime.fromtimestamp(openTime).strftime("%A")) # Check for correct day of week
-        # print(open, high, low, close, color, dow)
+        print(open, high, low, close, color, dow, humandate)
         # Create an entry in the specific database table
         add_record(
             symbol,
@@ -86,6 +87,7 @@ def download_candle_history(symbol, time_frame):
             ignore,
             dow,
             color,
+            humandate
         )
 
 def check_candle_data(symbol, time_frame):
