@@ -10,9 +10,9 @@ def main():
     for symbol in symbols:
         for time_frame in time_frames:
             check_db(symbol, time_frame)
-            check_candle_data(symbol, time_frame)
+            is_entry = check_candle_data(symbol, time_frame)
+            print("Entry is: " + str(is_entry))
             # download_last_candle(symbol, time_frame)
-
 
 if __name__ == "__main__":
     main()
