@@ -18,8 +18,9 @@ def main():
             if is_entry:
                 # if is_entry returns true (something other than 0), then start the download last candle function.
                 # Else history will be downloaded with the download_candle_history function.
-                download_last_candle(symbol, time_frame)
-                print("Entry is: " + str(is_entry))
+                # print("Entry is: " + str(is_entry))
+                download_last_candle(symbol, time_frame, is_entry)
+                
 
 
 if __name__ == "__main__":

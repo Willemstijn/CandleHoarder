@@ -94,24 +94,86 @@ def download_candle_history(symbol, time_frame):
         )
 
 
-def download_last_candle(symbol, time_frame):
+def download_last_candle(symbol, time_frame, is_entry):
     """
     This function checks for the last database entry and then downloads the candles from that entry on.
     If the last entry does not exist within the last 100 (maximum) candles, then assume something went wrong 
     and recreate the complete database from scratch.
     """
-    print("History found! Download last entry function for " + symbol + " on " + time_frame)    
-    # pass
-    # recent_candles = client.get_klines(symbol=symbol, interval=interval, limit=10)
-    # recent_candles.pop(-1)
-    # print(recent_candles)
-    # print(last_entry)
-    # Check last 10 candles for last entry
-    # If it exists, then download everything from that entry on
-    # If it does not exist, then check last 100 candles
-    #     If it exists somewhere, then download everything from that entry on
-    #     If it does not exist, then recreate database from scratch, womething whent wrong...
-    # # Download the last full candle from the exchange
+    print("History found! Download last entry function for " + symbol + " on " + time_frame)
+
+    if time_frame == "1m":
+        interval = Client.KLINE_INTERVAL_1MINUTE
+    elif time_frame == "3m":
+        interval = Client.KLINE_INTERVAL_3MINUTE
+    elif time_frame == "5m":
+        interval = Client.KLINE_INTERVAL_5MINUTE
+    elif time_frame == "15m":
+        interval = Client.KLINE_INTERVAL_15MINUTE
+    elif time_frame == "30m":
+        interval = Client.KLINE_INTERVAL_30MINUTE
+    elif time_frame == "1h":
+        interval = Client.KLINE_INTERVAL_1HOUR
+    elif time_frame == "4h":
+        interval = Client.KLINE_INTERVAL_4HOUR
+    elif time_frame == "6h":
+        interval = Client.KLINE_INTERVAL_6HOUR
+    elif time_frame == "8h":
+        interval = Client.KLINE_INTERVAL_8HOUR
+    elif time_frame == "12h":
+        interval = Client.KLINE_INTERVAL_12HOUR
+    elif time_frame == "1d":
+        interval = Client.KLINE_INTERVAL_1DAY
+    elif time_frame == "3d":
+        interval = Client.KLINE_INTERVAL_3DAY
+    elif time_frame == "1w":
+        interval = Client.KLINE_INTERVAL_1WEEK
+    elif time_frame == "1M":
+        interval = Client.KLINE_INTERVAL_1MONTH
+
+    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=10)
+    # Pop last entry from list. This candle is not closed but active.
+    last_candles.pop(-1)
+
+    # check if the last candle in the database is in the just downloaded last candles list
+    # and determine the position of the newest candle(s)
+    temp = []
+    for last_candle in last_candles:
+        temp.append(last_candle[0]/1000)
+    # get the exact position of the NEW candle in this downloaded list
+    position = temp.index(is_entry) + 1
+
+    # Now add all the entries from the original last_candles list to the database
+    # from the newest position, therefore also adding possible missing candles.
+
+
+
+    print(is_entry)
+    print(temp)
+
+    print(position)
+    
+    print(temp[position])
+
+    add_record(
+        symbol,
+        time_frame,
+        openTime,
+        open,
+        high,
+        low,
+        close,
+        volume,
+        closeTime,
+        quoteAssetVolume,
+        numberOfTrades,
+        takerBuyBaseAssetVolume,
+        takerBuyQuoteAssetVolume,
+        ignore,
+        dow,
+        color,
+        humandate
+    )
 
 def check_candle_data(symbol, time_frame):
     """
