@@ -2,8 +2,8 @@
 import sys
 from time import time
 from config import *
-from database import *
-from candle import *
+from modules.database import *
+from modules.candle import *
 
 # Path to modules
 sys.path.insert(1, "./modules/")
@@ -18,7 +18,6 @@ def main():
             if is_entry:
                 # if is_entry returns true (something other than 0), then start the download last candle function.
                 # Else history will be downloaded with the download_candle_history function.
-                # print("Entry is: " + str(is_entry))
                 download_last_candle(symbol, time_frame, is_entry)
                 
 

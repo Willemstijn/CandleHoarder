@@ -2,15 +2,18 @@
 # This file contains all candle data related functions.
 
 # Import modules
-from calendar import day_abbr, month
-import os
+import sys
 import sqlite3
-
+from calendar import day_abbr, month
 from time import time
 from turtle import onclick
 from config import *
-from database import add_record
+from modules.database import add_record
 from datetime import datetime
+
+# Path to modules
+sys.path.insert(1, "./modules/")
+
 
 def download_candle_history(symbol, time_frame):
     """
@@ -100,7 +103,7 @@ def download_last_candle(symbol, time_frame, is_entry):
     If the last entry does not exist within the last 100 (maximum) candles, then assume something went wrong 
     and recreate the complete database from scratch.
     """
-    print("History found! Download last entry function for " + symbol + " on " + time_frame)
+    print("History found! Download latest entries for " + symbol + " on " + time_frame)
 
     if time_frame == "1m":
         interval = Client.KLINE_INTERVAL_1MINUTE
@@ -145,35 +148,52 @@ def download_last_candle(symbol, time_frame, is_entry):
 
     # Now add all the entries from the original last_candles list to the database
     # from the newest position, therefore also adding possible missing candles.
-
-
-
-    print(is_entry)
-    print(temp)
-
-    print(position)
     
-    print(temp[position])
+    # First create a sublist of the original downloaded list containing only the candles to import.
+    import_candles = last_candles[position:]
 
-    add_record(
-        symbol,
-        time_frame,
-        openTime,
-        open,
-        high,
-        low,
-        close,
-        volume,
-        closeTime,
-        quoteAssetVolume,
-        numberOfTrades,
-        takerBuyBaseAssetVolume,
-        takerBuyQuoteAssetVolume,
-        ignore,
-        dow,
-        color,
-        humandate
-    )
+    # Then walk over the sublist and import every candle into the database.
+    for import_candle in import_candles:
+        openTime = import_candle[0] // 1000
+        open = import_candle[1]
+        high = import_candle[2]
+        low = import_candle[3]
+        close = import_candle[4]
+        volume = import_candle[5]
+        closeTime = import_candle[6] // 1000
+        quoteAssetVolume = import_candle[7]
+        numberOfTrades = import_candle[8]
+        takerBuyBaseAssetVolume = import_candle[9]
+        takerBuyQuoteAssetVolume = import_candle[10]
+        ignore = import_candle[11]
+        dow = datetime.fromtimestamp(openTime).strftime("%A")
+        humandate = datetime.fromtimestamp(openTime).strftime("%Y%m%d")
+        if open > close:
+            color = "Red"
+        else:
+            color = "Green"
+    
+        # Create an entry in the specific database table
+        add_record(
+            symbol,
+            time_frame,
+            openTime,
+            open,
+            high,
+            low,
+            close,
+            volume,
+            closeTime,
+            quoteAssetVolume,
+            numberOfTrades,
+            takerBuyBaseAssetVolume,
+            takerBuyQuoteAssetVolume,
+            ignore,
+            dow,
+            color,
+            humandate
+        )
+
 
 def check_candle_data(symbol, time_frame):
     """
@@ -209,42 +229,4 @@ def check_candle_data(symbol, time_frame):
         return last_entry   
     conn.commit()
     conn.close()
-
-
-
-
-# def check_candle_data(symbol, time_frame):
-#     """
-#     This function connects to the database and fetches the most current database entry.
-    
-#     Args:
-#         symbol (string): Symbol of the pair
-#         time_frame (string): Time frame of the pair
-#     Returns:
-#         integer: Location of the last database candle in the API output
-#     """
-#     pass
-#     conn = sqlite3.connect(data_location + symbol + ".db")
-#     c = conn.cursor()
-#     db_time_frame = "_" + time_frame
-#     # After connection to database, sort the database on openTime (descending) and
-#     # fetch the first entry.
-#     last_db_entry = c.execute(
-#         f"SELECT openTime FROM {db_time_frame} ORDER BY openTime DESC LIMIT 1;"
-#     )
-#     # print(last_db_entry) # returns an object instead of a value
-#     # Change the <sqlite3.Cursor object at XXXX> an actual readable last_entry variable
-#     try:
-#         last_entry = c.fetchall()[0][0]
-#         print("Last entry is: " + str(last_entry) + "\nFetching last full candle(s).")
-#         download_last_candle(symbol, time_frame)
-#         return last_entry
-#     except:
-#         # No data in database. Make placeholder label. Then fetch all missing data from the exchange.
-#         last_entry = 0
-#         print("Last entry is: " + str(last_entry) + "\nFetching historical data.")
-#         download_candle_history(symbol, time_frame)
-#     conn.commit()
-#     conn.close()
-
 

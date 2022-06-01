@@ -2,9 +2,13 @@
 # This file contains all database related functions.
 
 # Import modules
+import sys
 import os
 import sqlite3
 from config import *
+
+# Path to modules
+sys.path.insert(1, "./modules/")
 
 
 def create_table(symbol, time_frame):
