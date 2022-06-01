@@ -13,8 +13,10 @@ from database import add_record
 from datetime import datetime
 
 def download_candle_history(symbol, time_frame):
-    """This function fetches historical klines from exchange and enters the data in the database."""
-    # print(symbol, time_frame)
+    """
+    This function fetches historical klines from exchange and enters the data in the database.
+    """
+    print("No data found! Downloading history for " + symbol + " on " + time_frame)
     if time_frame == "1m":
         interval = Client.KLINE_INTERVAL_1MINUTE
     elif time_frame == "3m":
@@ -98,7 +100,7 @@ def download_last_candle(symbol, time_frame):
     If the last entry does not exist within the last 100 (maximum) candles, then assume something went wrong 
     and recreate the complete database from scratch.
     """
-    print("download last entry function")    
+    print("History found! Download last entry function for " + symbol + " on " + time_frame)    
     # pass
     # recent_candles = client.get_klines(symbol=symbol, interval=interval, limit=10)
     # recent_candles.pop(-1)
@@ -135,13 +137,12 @@ def check_candle_data(symbol, time_frame):
     # Change the <sqlite3.Cursor object at XXXX> an actual readable last_entry variable
     try:
         last_entry = c.fetchall()[0][0]
-        print("Last entry is: " + str(last_entry) + "\nFetching last full candle(s).")
-        # download_last_candle(symbol, time_frame)
+        # print("Last entry is: " + str(last_entry))
         return last_entry
     except:
         # No data in database. Make placeholder label. Then fetch all missing data from the exchange.
         last_entry = 0
-        print("Last entry is: " + str(last_entry) + "\nFetching historical data.")
+        # print("Last entry is: " + str(last_entry))
         download_candle_history(symbol, time_frame)
         return last_entry   
     conn.commit()
