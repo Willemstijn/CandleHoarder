@@ -7,7 +7,11 @@ import sqlite3
 from calendar import day_abbr, month
 from time import time
 <<<<<<< HEAD
+<<<<<<< HEAD
 # from turtle import onclick
+=======
+#from turtle import onclick
+>>>>>>> b2cae51 (Notebook R_R changed)
 =======
 #from turtle import onclick
 >>>>>>> b2cae51 (Notebook R_R changed)
