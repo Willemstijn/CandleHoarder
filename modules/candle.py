@@ -51,8 +51,10 @@ def download_candle_history(symbol, time_frame):
 
     # After determining the timeframe get candle data (klines) with help of the binance Python module.
     recent_candles = client.get_klines(symbol=symbol, interval=interval, limit=candle_history)
+
     # Pop last entry from list. This candle is not closed but active.
     recent_candles.pop(-1)
+
     # Assign candle values to variables for inserting into the database.
     for recent_candle in recent_candles:
         openTime = recent_candle[0] // 1000
@@ -73,6 +75,7 @@ def download_candle_history(symbol, time_frame):
             color = "Red"
         else:
             color = "Green"
+
         # Create an entry in the specific database table with the variables above.
         add_record(
             symbol,
@@ -101,7 +104,7 @@ def download_last_candle(symbol, time_frame, is_entry):
     If the last entry does not exist within the last 100 (maximum) candles, then assume something went wrong 
     and recreate the complete database from scratch.
     """
-    print("History found! Download latest entries for " + symbol + " on " + time_frame)
+
     # Determine the timeframe
     if time_frame == "1m":
         interval = Client.KLINE_INTERVAL_1MINUTE
@@ -133,20 +136,25 @@ def download_last_candle(symbol, time_frame, is_entry):
         interval = Client.KLINE_INTERVAL_1MONTH
 
     # After determining the timeframe get candle data (klines) with help of the binance Python module.
-    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=10)
+    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=300)
+
     # Pop last entry from list. This candle is not closed but active.
     last_candles.pop(-1)
+
     # check if the last candle in the database is in the just downloaded last candles list
     # and determine the position of the newest candle(s)
     temp = []
     for last_candle in last_candles:
         temp.append(last_candle[0]/1000)
+
     # get the exact position of the NEW candle in this downloaded list
     position = temp.index(is_entry) + 1
+
     # Now add all the entries from the original last_candles list to the database
     # from the newest position, therefore also adding possible missing candles.
     # First create a sublist of the original downloaded list containing only the candles to import.
     import_candles = last_candles[position:]
+
     # Then walk over the sublist and import every candle into the database.
     for import_candle in import_candles:
         openTime = import_candle[0] // 1000
@@ -167,6 +175,10 @@ def download_last_candle(symbol, time_frame, is_entry):
             color = "Red"
         else:
             color = "Green"
+
+        # Print message to screen / log
+        print("History found! Download entry " + humandate + " for " + symbol + " on " + time_frame)
+
         # Create an entry in the specific database table
         add_record(
             symbol,
@@ -200,15 +212,16 @@ def check_candle_data(symbol, time_frame):
     Returns:
         integer: Location of the last database candle in the API output
     """
-    pass
     conn = sqlite3.connect(data_location + symbol + ".db")
     c = conn.cursor()
     db_time_frame = "_" + time_frame
+
     # After connection to database, sort the database on openTime (descending) and
     # fetch the first entry.
     last_db_entry = c.execute(
         f"SELECT openTime FROM {db_time_frame} ORDER BY openTime DESC LIMIT 1;"
     )
+
     # print(last_db_entry) # returns an object instead of a value
     # Change the <sqlite3.Cursor object at XXXX> an actual readable last_entry variable
     try:
