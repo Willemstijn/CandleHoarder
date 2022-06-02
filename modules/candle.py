@@ -6,7 +6,7 @@ import sys
 import sqlite3
 from calendar import day_abbr, month
 from time import time
-from turtle import onclick
+# from turtle import onclick
 from config import *
 from modules.database import add_record
 from datetime import datetime
