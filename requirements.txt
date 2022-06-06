@@ -1,2 +1,4 @@
 # Install with: sudo pip3 install -r requirements.txt
+pandas
+pandas-ta
 python-binance

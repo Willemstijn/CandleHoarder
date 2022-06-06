@@ -225,7 +225,8 @@ def check_candle_data(symbol, time_frame):
     # Change the <sqlite3.Cursor object at XXXX> an actual readable last_entry variable
     try:
         last_entry = c.fetchall()[0][0]
-        # print("Last entry is: " + str(last_entry))
+        humandate = datetime.fromtimestamp(last_entry).strftime("%Y%m%d")
+        print("Last entry for " + symbol + " is: " + str(humandate))
         return last_entry
     except:
         # No data in database. Make placeholder label. Then fetch all missing data from the exchange.
