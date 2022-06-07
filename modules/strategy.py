@@ -1,4 +1,12 @@
 # This file contains all the strategies that will be calculated and plotted
+import pandas as pd
+import pandas_ta as pta
+import numpy as np
+
+def test(symbol, time_frame, df):
+    # print (symbol, time_frame, df)
+    print(symbol, time_frame)
+    print(df)
 
 # def check_swing_strategy(symbol, timeframe, df):
 #     """Function that checks the last candle close and returns signals when a
