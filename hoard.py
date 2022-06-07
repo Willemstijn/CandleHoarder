@@ -24,9 +24,10 @@ def main():
                 download_last_candle(symbol, time_frame, is_entry)
             # === THIS WHOLE SECTION ABOVE IS COMMENTED OUT BUT IS GOOD!
             df = create_dataframe(symbol, time_frame)
-
+            
             # Define the strategies you want to test in the section below:
-            test(symbol, time_frame, df)
+            # test(symbol, time_frame, df)
+            superhilo(df)
 
 if __name__ == "__main__":
     main()

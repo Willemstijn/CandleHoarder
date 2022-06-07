@@ -83,7 +83,7 @@ symbols = ["BTCUSDT",]
 time_frames = ["1d"]
 
 # Enter amount of historical data to fetch for initial candle data download
-candle_history = 10
+candle_history = 100
 
 # Client key & secret for downloading data through the API exchange
 client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)

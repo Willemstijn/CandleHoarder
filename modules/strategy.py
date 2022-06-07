@@ -1,12 +1,47 @@
 # This file contains all the strategies that will be calculated and plotted
 import pandas as pd
 import pandas_ta as pta
+import ta as ta
 import numpy as np
 
 def test(symbol, time_frame, df):
-    # print (symbol, time_frame, df)
     print(symbol, time_frame)
     print(df)
+
+def superhilo(df):
+    # macd
+    fast = 12
+    slow = 26
+    smooth = 9
+    df["macd"] = pta.macd(close=df["close"], fast=fast, slow=slow, signal=smooth, offset=None)[f"MACD_{fast}_{slow}_{smooth}"]
+    df["macds"] = pta.macd(close=df["close"], fast=fast, slow=slow, signal=smooth, offset=None)[f"MACDs_{fast}_{slow}_{smooth}"]
+    df["macdh"] = pta.macd(close=df["close"], fast=fast, slow=slow, signal=smooth, offset=None)[f"MACDh_{fast}_{slow}_{smooth}"]
+
+    # supertrend
+    length = 10
+    multiplier = 4.5
+    df["supertrend_buy"] = pta.supertrend(high=df["high"],low=df["low"],close=df["close"],length=length,multiplier=multiplier,)[f"SUPERTd_{length}_{multiplier}"]
+    df["supertrend"] = pta.supertrend(high=df["high"],low=df["low"],close=df["close"],length=length,multiplier=multiplier,)[f"SUPERT_{length}_{multiplier}"]
+
+    # hilo
+    highl = 13
+    lowl = 21
+    df["hilo"] = pta.hilo(high=df["high"],low=df["low"],close=df["close"],high_length=highl,low_length=lowl,mamode=None,offset=None,)[f"HILO_{highl}_{lowl}"]
+
+    print(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # def check_swing_strategy(symbol, timeframe, df):
 #     """Function that checks the last candle close and returns signals when a

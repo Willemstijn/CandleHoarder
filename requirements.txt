@@ -2,3 +2,5 @@
 pandas
 pandas-ta
 python-binance
+ta
+ta-lib
