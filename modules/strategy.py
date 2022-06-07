@@ -28,7 +28,68 @@ def superhilo(df):
     lowl = 21
     df["hilo"] = pta.hilo(high=df["high"],low=df["low"],close=df["close"],high_length=highl,low_length=lowl,mamode=None,offset=None,)[f"HILO_{highl}_{lowl}"]
 
-    print(df)
+    # Determine conditions that create signals
+    # ========================================
+    # hilo
+    df["hilo_buy"] = df["close"] > df["hilo"]
+    # macd
+    df["macd_buy"] = df["macd"] > df["macds"]
+    # supertrend
+    df["supertrend_buy"] = df["close"] > df["supertrend"]
+    # supertrend_buy already has 1 for true (buy) signal
+    
+    print(df[["openTime","open","high","low","close","volume","supertrend_buy","macd_buy","hilo_buy",]].tail(10))
+
+
+
+    # # Function below actually creates the columns with buy/sell signals and corresponding prices
+    # # ==========================================================================================
+    # def buy_sell(df):
+    #     """Function that determines the buy / sell signals based on the indicators."""
+    #     sigPriceBuy = []
+    #     sigPriceSell = []
+    #     signal = []
+    #     flag = -1
+
+    #     for i in range(len(df)):
+    #         # Buy Signal if MACD, supertrend_buy and hilo are true
+    #         if (
+    #             (df["hilo_buy"][i] == True)
+    #             & (df["macd_buy"][i] == True)
+    #             & (df["supertrend_buy"][i] == 1)
+    #         ):
+    #             if flag != 1:
+    #                 sigPriceBuy.append(df["close"][i])
+    #                 sigPriceSell.append(np.NaN)
+    #                 signal.append("buy")
+    #                 flag = 1
+    #             else:
+    #                 sigPriceBuy.append(np.NaN)
+    #                 sigPriceSell.append(np.NaN)
+    #                 signal.append("neutral")
+    #         # Sell if MACD has bearish crossover
+    #         elif ((df["hilo_buy"][i] == True) & (df["macd_buy"][i] == False)) | (
+    #             (df["hilo_buy"][i] == False) & (df["macd_buy"][i] == False)
+    #         ):
+    #             if flag != 0:
+    #                 sigPriceBuy.append(np.NaN)
+    #                 sigPriceSell.append(df["close"][i])
+    #                 signal.append("sell")
+    #                 flag = 0
+    #             else:
+    #                 sigPriceBuy.append(np.NaN)
+    #                 sigPriceSell.append(np.NaN)
+    #                 signal.append("neutral")
+    #         else:
+    #             sigPriceBuy.append(np.NaN)
+    #             sigPriceSell.append(np.NaN)
+    #             signal.append("neutral")
+
+    #     return (sigPriceBuy, sigPriceSell, signal)
+    
+    # buy_sell = buy_sell(df)
+    # print("buy-sell")    
+    # print(df)
 
 
 
@@ -41,23 +102,3 @@ def superhilo(df):
 
 
 
-
-
-# def check_swing_strategy(symbol, timeframe, df):
-#     """Function that checks the last candle close and returns signals when a
-#     change in advice is detected."""
-
-#     # Get the second to last entry in the dataframe column with advice
-#     # This is the last full closing day.
-#     change = df.iloc[-2]["POS_adv_changed"]
-#     advice = df.iloc[-2]["POS_adv"]
-#     close = df.iloc[-2]["close"].round(2)
-
-#     # If change field is false (not the same as the previous advice),
-#     # then the advice has been changed and a warning should be created.
-#     if change == False:
-#         # return swing strategy advice
-#         signal_field = "{} signal {} ({}).\nClose: {},\n\n".format(
-#             advice, symbol, timeframe, close
-#         )
-#         return signal_field
