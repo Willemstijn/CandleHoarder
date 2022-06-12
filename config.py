@@ -24,8 +24,8 @@ candle_history = 1000
 # See the secrets.py file for actual keys.
 client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
 
-symbols = ["BTCUSDT",]
-        # "ETHUSDT",
+symbols = ["BTCUSDT",
+        "ETHUSDT",]
 #         "BNBUSDT",
 #         "SOLUSDT",
 #         "ADAUSDT",
