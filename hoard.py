@@ -32,6 +32,7 @@ def main():
             mayer_multiple(symbol, time_frame, df)
             bull_support_band(symbol, time_frame, df)
             moving_averages(symbol, time_frame, df)
+            supertrend(symbol, time_frame, df)
             # superhilo(df)
 
 if __name__ == "__main__":

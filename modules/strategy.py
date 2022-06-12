@@ -102,14 +102,14 @@ def bull_support_band(symbol, time_frame, df):
 
     print(f"Creating Bull support band plot for {symbol} on {time_frame}...")
 
-    # Determine lookback period
+    # Determine lookback period.
     days = 500
 
-    # Create colums in dataframe for plotting
+    # Create colums in dataframe for plotting.
     df['sma21'] = pta.sma(df["close"], length=21)
     df['ema21'] = pta.ema(df["close"], length=21)
 
-    # Plot output to graphs for wiki
+    # Plot output to graphs for wiki.
     plt.style.use('seaborn-notebook')
     plt.figure(figsize=(14, 7))
     plt.grid(linestyle='--', linewidth=0.3)
@@ -126,12 +126,12 @@ def bull_support_band(symbol, time_frame, df):
     plt.plot(dates, ema21, label='21 ema daily', linewidth=1, color='red')
     plt.plot(dates, sma21, label='21 sma daily', linewidth=1, color='green')
 
-    # Create log chart
+    # Create log chart.
     # plt.yscale('log')
 
     plt.gcf().autofmt_xdate()
 
-    # Plot buy / sell signals
+    # Plot buy / sell signals.
     plt.fill_between(dates, ema21, sma21,where=(ema21 >= sma21), color='green', alpha=0.25,label='Bullish')
     plt.fill_between(dates, ema21, sma21,where=(ema21 <= sma21), color='red', alpha=0.25,label='Bearish')
 
@@ -145,6 +145,7 @@ def bull_support_band(symbol, time_frame, df):
     plt.cla()
     plt.close()
 
+
 def moving_averages(symbol, time_frame, df):
     """
     A collection of important moving averages in this chart. Be aware that each of them can act as support
@@ -154,10 +155,10 @@ def moving_averages(symbol, time_frame, df):
     print(f"Creating moving averages plot for {symbol} on {time_frame}...")
 
     if len(df) > 998:
-        # Determine lookback period
+        # Determine lookback period.
         days = 500
 
-        # Calculate moving averages
+        # Calculate moving averages.
         df['sma21'] = pta.sma(df["close"], length=21)
         df['ema21'] = pta.ema(df["close"], length=21)
         df['sma50'] = pta.sma(df["close"], length=50)
@@ -166,7 +167,7 @@ def moving_averages(symbol, time_frame, df):
         df['wsma20'] = pta.sma(df["close"], length=140)
         # df['wsma200'] = pta.sma(df["close"], length=1400)
 
-        # Plot output to graphs for wiki
+        # Plot output to graphs for wiki.
         plt.style.use('seaborn-notebook')
         plt.figure(figsize=(14, 7))
         plt.grid(linestyle='--', linewidth=0.3)
@@ -182,7 +183,7 @@ def moving_averages(symbol, time_frame, df):
         wsma20 = df['wsma20'].tail(days)
         # wsma200 = df['wsma200'].tail(days)
 
-        # Adding lines
+        # Adding lines.
         plt.plot(dates, price, label='Price', linewidth=3, color='blue')
         plt.plot(dates, sma21, label='21 sma daily', linewidth=1, color='red')
         plt.plot(dates, sma50, label='50 sma daily', linewidth=1, color='orange')
@@ -191,7 +192,7 @@ def moving_averages(symbol, time_frame, df):
         plt.plot(dates, wsma20, label='20 sma weekly', linewidth=1, color='purple')
         # plt.plot(dates, wsma200, label='200 sma weekly (absolute bottom?)', linewidth=1, color='black')
 
-        # Create log chart
+        # Create log chart.
         # plt.yscale('log')
 
         plt.gcf().autofmt_xdate()
@@ -207,3 +208,85 @@ def moving_averages(symbol, time_frame, df):
         plt.close()
     elif len(df) < 998:
         print(symbol + ' has not enough data to create moving averages chart')
+
+
+def supertrend(symbol, time_frame, df):
+    """
+    Plot of supertrend indicator with macd and rsi.
+    """
+
+    print(f"Creating Supertrend plot for {symbol} on {time_frame}...")
+
+    # Determine lookback period
+    days = 500
+
+    # Calculate supertrend indicator
+    # supertrend
+    length = 5
+    multiplier = 3.6
+    df["supertrend"] = pta.supertrend(high=df["high"],low=df["low"],close=df["close"],length=length,multiplier=multiplier,)[f"SUPERT_{length}_{multiplier}"]
+
+    # macd
+    fast = 12
+    slow = 26
+    smooth = 9
+    df["macd"] = pta.macd(close=df["close"], fast=fast, slow=slow, signal=smooth, offset=None)[f"MACD_{fast}_{slow}_{smooth}"]
+    df["macds"] = pta.macd(close=df["close"], fast=fast, slow=slow, signal=smooth, offset=None)[f"MACDs_{fast}_{slow}_{smooth}"]
+    # df["macdh"] = pta.macd(close=df["close"], fast=fast, slow=slow, signal=smooth, offset=None)[f"MACDh_{fast}_{slow}_{smooth}"]
+
+    # rsi
+    df["rsi"] = pta.rsi(close=df["close"], timeperiod=14)
+
+    # Plot output to graphs for wiki.
+    plt.style.use('seaborn-notebook')
+    plt.figure(figsize=(14, 7))
+    plt.grid(linestyle='--', linewidth=0.3)
+
+    # df.sort_values(df['Date'], inplace=True)
+
+    dates = df['openTime'].tail(days)
+    price = df['close'].tail(days)
+    supertrend = df["supertrend"].tail(days)
+    macd = df['macd'].tail(days)
+    macdsignal = df['macds'].tail(days)
+    rsi = df["rsi"].tail(days)
+    
+    # Adding lines to upper plot.
+    plt.subplot(3, 1, 1)
+    plt.plot(dates, price, label='Price', linewidth=3)
+    plt.plot(dates, supertrend, label='SuperTrend', linewidth=1, color='green', alpha=1)
+
+    # Chart markup
+    plt.title(symbol + ' Supertrend  - ' + ct)
+    plt.xlabel('Date')
+    plt.ylabel('Price in USD')
+    plt.legend(loc='upper left')
+    plt.tight_layout()
+    plt.grid(linestyle='--')
+
+    # Adding lines to middle plot.
+    plt.subplot(3, 1, 2)
+    plt.plot(dates, macd, label='macd', linewidth=1, color='red', alpha=1)
+    plt.plot(dates, macdsignal, label='signal', linewidth=1, color='blue', alpha=1)
+    plt.axhline(y=0, color='grey', linestyle='--', linewidth=2)
+    plt.xlabel('Date')
+    plt.ylabel('macd')
+
+    # Adding lines to lower plot.
+    plt.subplot(3, 1, 3)
+    plt.plot(dates, rsi, label='rsi', linewidth=1, color='purple', alpha=1)
+    plt.axhline(y=50, color='grey', linestyle='--', linewidth=2)
+    plt.axhline(y=30, color='grey', linestyle='--', linewidth=1)
+    plt.axhline(y=70, color='grey', linestyle='--', linewidth=1)
+    plt.xlabel('Date')
+    plt.ylabel('rsi')
+
+    plt.gcf().autofmt_xdate()
+
+    # plt.suptitle(symbol + ' Chart')
+
+    # Plot to file
+    plt.savefig(f'{dir}/plots/supertrend-{symbol}-{time_frame}.png')
+    plt.cla()
+    plt.close()
+
