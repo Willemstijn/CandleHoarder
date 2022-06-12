@@ -144,3 +144,66 @@ def bull_support_band(symbol, time_frame, df):
     plt.savefig(f'{dir}plots/bullsupport-{symbol}-{time_frame}.png')
     plt.cla()
     plt.close()
+
+def moving_averages(symbol, time_frame, df):
+    """
+    A collection of important moving averages in this chart. Be aware that each of them can act as support
+    and/or resistance.
+    """
+
+    print(f"Creating moving averages plot for {symbol} on {time_frame}...")
+
+    if len(df) > 998:
+        # Determine lookback period
+        days = 500
+
+        # Calculate moving averages
+        df['sma21'] = pta.sma(df["close"], length=21)
+        df['ema21'] = pta.ema(df["close"], length=21)
+        df['sma50'] = pta.sma(df["close"], length=50)
+        df['sma100'] = pta.sma(df["close"], length=100)
+        df['sma200'] = pta.sma(df["close"], length=200)
+        df['wsma20'] = pta.sma(df["close"], length=140)
+        # df['wsma200'] = pta.sma(df["close"], length=1400)
+
+        # Plot output to graphs for wiki
+        plt.style.use('seaborn-notebook')
+        plt.figure(figsize=(14, 7))
+        plt.grid(linestyle='--', linewidth=0.3)
+
+        # df.sort_values(df['Date'], inplace=True)
+
+        dates = df['openTime'].tail(days)
+        price = df['close'].tail(days)
+        sma21 = df['sma21'].tail(days)
+        sma50 = df['sma50'].tail(days)
+        sma100 = df['sma100'].tail(days)
+        sma200 = df['sma200'].tail(days)
+        wsma20 = df['wsma20'].tail(days)
+        # wsma200 = df['wsma200'].tail(days)
+
+        # Adding lines
+        plt.plot(dates, price, label='Price', linewidth=3, color='blue')
+        plt.plot(dates, sma21, label='21 sma daily', linewidth=1, color='red')
+        plt.plot(dates, sma50, label='50 sma daily', linewidth=1, color='orange')
+        plt.plot(dates, sma100, label='100 sma daily', linewidth=1, color='yellow')
+        plt.plot(dates, sma200, label='200 sma daily', linewidth=1, color='green')
+        plt.plot(dates, wsma20, label='20 sma weekly', linewidth=1, color='purple')
+        # plt.plot(dates, wsma200, label='200 sma weekly (absolute bottom?)', linewidth=1, color='black')
+
+        # Create log chart
+        # plt.yscale('log')
+
+        plt.gcf().autofmt_xdate()
+
+        plt.title(symbol + ' moving averages - ' + ct)
+        plt.xlabel('Date')
+        plt.ylabel('Price (log)')
+        plt.legend(loc='upper left')
+
+        plt.tight_layout()
+        plt.savefig(f'{dir}/plots/averages-{symbol}-{time_frame}.png')
+        plt.cla()
+        plt.close()
+    elif len(df) < 998:
+        print(symbol + ' has not enough data to create moving averages chart')

@@ -18,7 +18,7 @@ time_frames = ["1d"]
 candle_lookback = 10
 
 # Enter amount of historical data to fetch for initial candle data download.
-candle_history = 1000
+candle_history = 2000
 
 # Client key & secret for downloading data through the API exchange.
 # See the secrets.py file for actual keys.
