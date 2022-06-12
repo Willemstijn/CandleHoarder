@@ -33,7 +33,7 @@ def main():
             bull_support_band(symbol, time_frame, df)
             moving_averages(symbol, time_frame, df)
             supertrend(symbol, time_frame, df)
-            # superhilo(df)
+            pi_cycle(symbol, time_frame, df)
 
 if __name__ == "__main__":
     main()

@@ -290,3 +290,98 @@ def supertrend(symbol, time_frame, df):
     plt.cla()
     plt.close()
 
+
+def pi_cycle(symbol, time_frame, df):
+    """
+    The Pi Cycle Top Indicator has historically been effective in picking out the timing of market cycle highs to within 3 days.
+    It uses the 111 day moving average (111DMA) and a newly created multiple of the 350 day moving average, the 350DMA x 2.
+    
+    Note: The multiple is of the price values of the 350DMA not the number of days.
+    
+    For the past three market cycles, when the 111DMA moves up and crosses the 350DMA x 2 we see that it coincides with the price 
+    of Bitcoin peaking. It is also interesting to note that 350 / 111 is 3.153, which is very close to Pi = 3.142. In fact, it is 
+    the closest we can get to Pi when dividing 350 by another whole number.
+    It once again demonstrates the cyclical nature of Bitcoin price action over long time frames. Though in this instance it does 
+    so with a high degree of accuracy over the past 7 years. 
+    
+    Bitcoin Price Prediction Using This Tool
+    The Pi Cycle Top Indicator forecasts the cycle top of Bitcoin’s market cycles. It attempts to predict the point where Bitcoin 
+    price will peak before pulling back. It does this on major high time frames and has picked the absolute tops of Bitcoin’s major 
+    price moves throughout most of its history.
+    
+    How It Can Be Used
+    Pi Cycle Top is useful to indicate when the market is very overheated. So overheated that the shorter term moving average, which 
+    is the 111 day moving average, has reached a x2 multiple of the 350 day moving average. Historically it has proved advantageous 
+    to sell Bitcoin at this time in Bitcoin's price cycles.
+    """
+
+    print(f"Creating PI Cycle plot for {symbol} on {time_frame}...")
+
+    if len(df) > 998:
+        # Determine lookback period.
+        days = 500
+
+        # Calculate moving averages.
+        df['sma350'] = pta.sma(df["close"], length=350)
+        df['double_sma350'] = df['sma350'] * 2
+        df['tripple_sma350'] = df['sma350'] * 3
+        df['hexa_sma350'] = df['sma350'] * 5
+        df['fib1414_sma350'] = df['sma350'] / 1.414
+        df['fib1618_sma350'] = df['sma350'] / 1.618
+        df['fib2_sma350'] = df['sma350'] / 2
+        df['fib2414_sma350'] = df['sma350'] / 2.414
+        df['sma111'] = pta.sma(df["close"], length=111)
+        df['sma128'] = pta.sma(df["close"], length=128)
+        df['sma700'] = pta.sma(df["close"], length=700)
+        
+        # Plot output to graphs for wiki.
+        plt.style.use('seaborn-notebook')
+        plt.figure(figsize=(14, 7))
+        plt.grid(linestyle='--', linewidth=0.3)
+
+        # df.sort_values(df['Date'], inplace=True)
+
+        dates = df['openTime'].tail(days)
+        price = df['close'].tail(days)
+        sma350 = df['sma350'].tail(days)
+        dsma350 = df['double_sma350'].tail(days)
+        tsma350 = df['tripple_sma350'].tail(days)
+        hsma350 = df['hexa_sma350'].tail(days)
+        fib1414 = df['fib1414_sma350'].tail(days)
+        fib1618 = df['fib1618_sma350'].tail(days)
+        fib2414 = df['fib2414_sma350'].tail(days)
+        sma111 = df['sma111'].tail(days)
+        sma128 = df['sma128'].tail(days)
+        sma700 = df['sma700'].tail(days)
+
+        # Adding lines.
+        plt.plot(dates, price, label='Price', linewidth=3, color='blue')
+        plt.plot(dates, hsma350, label='hexa 350 sma', linewidth=1, color='yellow')
+        plt.plot(dates, tsma350, label='tripple 350 sma', linewidth=1, color='orange')
+        plt.plot(dates, dsma350, label='double 350 sma', linewidth=2, color='red')
+        plt.plot(dates, sma350, label='350 sma', linewidth=1, color='red')
+        plt.plot(dates, sma111, label='111 sma', linewidth=2, color='lime')
+        plt.plot(dates, sma128, label='128 sma', linewidth=1, color='green')
+        plt.plot(dates, sma700, label='700 sma (100 week)', linewidth=1, color='purple')
+        plt.plot(dates, fib1414, label='350 sma / fib 1.414', linewidth=1, color='brown')
+        plt.plot(dates, fib1618, label='350 sma / fib 1.618', linewidth=1, color='grey')
+        plt.plot(dates, fib2414, label='350 sma / fib 2.414 (absolute bottom??)', linewidth=1, color='black')
+        
+        plt.fill_between(dates, sma111, sma128, color='green', alpha=0.25)
+
+        # Create log chart.
+        plt.yscale('log')
+
+        plt.gcf().autofmt_xdate()
+
+        plt.title(symbol + ' PI Cycle with fibonacci - ' + ct)
+        plt.xlabel('Date')
+        plt.ylabel('Price (log)')
+        plt.legend(loc='upper left')
+
+        plt.tight_layout()
+        plt.savefig(f'{dir}/plots/picycle-{symbol}-{time_frame}.png')
+        plt.cla()
+        plt.close()
+    elif len(df) < 998:
+        print(symbol + ' has not enough data to create moving averages chart')
