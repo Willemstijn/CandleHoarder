@@ -100,7 +100,7 @@ def download_candle_history(symbol, time_frame):
 def download_last_candle(symbol, time_frame, is_entry):
     """
     This function checks for the last database entry and then downloads the candles from that entry on.
-    If the last entry does not exist within the last 100 (maximum) candles, then assume something went wrong 
+    If the last entry does not exist within the configured candle lookback period (config), then assume something went wrong 
     and recreate the complete database from scratch.
     """
 
@@ -135,7 +135,7 @@ def download_last_candle(symbol, time_frame, is_entry):
         interval = Client.KLINE_INTERVAL_1MONTH
 
     # After determining the timeframe get candle data (klines) with help of the binance Python module.
-    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=300)
+    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=candle_lookback)
 
     # Pop last entry from list. This candle is not closed but active.
     last_candles.pop(-1)

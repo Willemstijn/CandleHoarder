@@ -1,4 +1,4 @@
-# Import modules
+# Import modules.
 import sys
 from config import *
 from modules.database import *
@@ -6,7 +6,7 @@ from modules.candle import *
 from modules.dataframe import *
 from modules.strategy import *
 
-# Path to modules
+# Path to CandleHoarder specific modules.
 sys.path.insert(1, "./modules/")
 
 def main():
@@ -29,7 +29,7 @@ def main():
             
             # Define the strategies you want to test in the section below:
             # test(symbol, time_frame, df)
-            mayer_multiple(df)
+            mayer_multiple(symbol, time_frame, df)
             # superhilo(df)
 
 if __name__ == "__main__":

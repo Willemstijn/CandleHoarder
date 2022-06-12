@@ -4,6 +4,9 @@
 from binance.client import Client
 import secrets
 
+# Installation directory.
+dir = "/home/bas/Dropbox/CodeRepository/CandleHoarder/"
+
 # Enter the location where the databases should exist  be created.
 data_location = "./data/"
 
@@ -11,10 +14,14 @@ data_location = "./data/"
 # Available timeframes are: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M.
 time_frames = ["1d"]
 
-# Enter amount of historical data to fetch for initial candle data download
+# Candle lookback period for when fetching candle updates.
+candle_lookback = 10
+
+# Enter amount of historical data to fetch for initial candle data download.
 candle_history = 1000
 
-# Client key & secret for downloading data through the API exchange
+# Client key & secret for downloading data through the API exchange.
+# See the secrets.py file for actual keys.
 client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
 
 symbols = ["BTCUSDT",]
