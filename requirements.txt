@@ -1,6 +1,8 @@
-# Install with: sudo pip3 install -r requirements.txt
+# Install in vurtual environment with:
+# sudo pip3 install -r requirements.txt --ignore-installed --force-reinstalls
 pandas
 pandas-ta
 python-binance
 ta
 ta-lib
+matplotlib

@@ -15,8 +15,6 @@ def create_dataframe(symbol, time_frame):
     df = pd.read_sql_query("SELECT * FROM (SELECT openTime,open,high,low,close,volume,dow,color,humandate FROM _" + time_frame +" ORDER BY openTime DESC LIMIT " + str(candle_history) + ") sub ORDER BY openTime ASC", conn)
     conn.close()
     
-    # Do some modifications to the dataframe so that it is ready for further analysis
-
     # Change Unix time to human readable time
     df["openTime"] = pd.to_datetime(df["openTime"], unit="s")
 

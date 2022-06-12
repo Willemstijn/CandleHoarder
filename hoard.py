@@ -23,11 +23,14 @@ def main():
                 # Else history will be downloaded with the download_candle_history function.
                 download_last_candle(symbol, time_frame, is_entry)
             # === THIS WHOLE SECTION ABOVE IS COMMENTED OUT BUT IS GOOD!
+
+            # Create dataframe of each symbol for further analysis.
             df = create_dataframe(symbol, time_frame)
             
             # Define the strategies you want to test in the section below:
             # test(symbol, time_frame, df)
-            superhilo(df)
+            mayer_multiple(df)
+            # superhilo(df)
 
 if __name__ == "__main__":
     main()
