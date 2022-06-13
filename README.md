@@ -37,9 +37,16 @@ pip install -r requirements.txt
 
 ## Configuration
 
-## secret file
+### Configuration file
 
-File 'secret.py' should be made to contain confidential information. The content of the file should be at least:
+Edit the configuration file to suit your own environment. Also add the pairs and timeframes that you 
+want to monitor in this file. To get the necessary pairs, use CCXT to do a querie or pairs on your 
+favorite exchange.
+
+### secret file
+
+File 'secret.py' should contain the confidential information of your exchange if you 
+need it. BE SURE TO CLEAR THIS FILE BEFORE UPLOADING YOUR INSTALLATION TO A PUBLIC REPOSITOY!!
 
 ```
 BINANCE_API_KEY = ""
@@ -47,15 +54,37 @@ BINANCE_API_SECRET = ""
 
 ```
 
-This file is not here by default but should be made manually.
+### Packages
 
-## Packages
+The packages or modules to run this script are in the requirements file. 
+Install these requirements with the following command (also found in file):
 
-This program uses the following packages:
+```
+pip3 install -r requirements.txt
+```
 
-* python-binance (https://pypi.org/project/python-binance/)
-* schedule (https://pypi.org/project/schedule/)
-* 
+## Running the hoarder
+
+To run the CandleHoarder script at regular intervals, create an entry in your crontab file and add one of the following examples below or create your own crontab entry at: https://www.freeformatter.com/cron-expression-generator-quartz.html
+
+```
+# Open crontab with
+crontab -e
+
+# Run CandleHoarder every day at 01:15 am
+15 1 * * * python /opt/CandleHoarder/hoard.py > /root/log/candlehoarder-log.log 2>&1
+
+# 4:01 hr timeframe
+1 2,6,10,14,18,22 * * * /opt/CandleHoarder/hoard.py > /root/log/candlehoarder-log.log 2>&1
+
+# 1:01 hr timeframe
+1 * * * * /opt/CandleHoarder/hoard.py > /root/log/candlehoarder-log.log 2>&1
+
+# 15 min timeframe
+*/15 * * * * /opt/CandleHoarder/hoard.py > /root/log/candlehoarder-log.log 2>&1
+
+```
+
 ## Misc
 
 Read: 
@@ -65,7 +94,7 @@ Read:
 
 For information about the python-binance library.
 
-## Getting markets
+### Getting markets
 
 At this moment I use the Freqtrade 'list-markets' option to fetch all `Binance` information to fill my configuration file with trading pair information. At the moment I use two specific commands to get USDT and BTC base pair information:
 
