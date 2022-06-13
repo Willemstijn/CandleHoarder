@@ -2,6 +2,8 @@
 # coding=utf-8
 import subprocess
 import datetime
+from config import *
+from distutils.dir_util import copy_tree
 
 # ct stores current time
 ct = datetime.datetime.now()
@@ -12,12 +14,13 @@ ts = ct.timestamp()
 comment = f"last updated {ct}"
 
 def sync_plots():
-    """This funtion copies the plots from the symbols to a 
+    """
+    This funtion copies the plots from the symbols to a 
     Wiki environment for internet publishing
     """
     print("Copying plots to wiki")
-    src = "{}/plots".format(cfg.dir)
-    dst = cfg.wiki
+    src = "{}mdwiki/plots".format(dir)
+    dst = wiki
     copy_tree(src, dst)
 
 def sync_git():

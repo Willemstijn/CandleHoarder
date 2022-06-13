@@ -5,6 +5,7 @@ from modules.database import *
 from modules.candle import *
 from modules.dataframe import *
 from modules.strategy import *
+from modules.sync import *
 
 # Path to CandleHoarder specific modules.
 sys.path.insert(1, "./modules/")
@@ -34,6 +35,9 @@ def main():
             moving_averages(symbol, time_frame, df)
             supertrend(symbol, time_frame, df)
             pi_cycle(symbol, time_frame, df)
+    
+    # Synchronise the plots that were created by the strategy to an external wiki site for publishing.
+    sync_plots()
 
 if __name__ == "__main__":
     main()
