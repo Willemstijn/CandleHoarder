@@ -23,6 +23,17 @@ def sync_plots():
     dst = wiki
     copy_tree(src, dst)
 
+def sync_pages():
+    """
+    This funtion copies the pages of the strategies plots to a 
+    Wiki environment for internet publishing
+    """
+    print("Copying markdown pages to wiki")
+    src = "{}mdwiki/content".format(dir)
+    dst = wiki
+    copy_tree(src, dst)
+
+
 def sync_git():
     # GIT commands
     # from: https://geekflare.com/python-run-bash/

@@ -6,6 +6,7 @@ from modules.candle import *
 from modules.dataframe import *
 from modules.strategy import *
 from modules.sync import *
+from modules.pages import create_pages
 
 # Path to CandleHoarder specific modules.
 sys.path.insert(1, "./modules/")
@@ -36,8 +37,12 @@ def main():
             supertrend(symbol, time_frame, df)
             pi_cycle(symbol, time_frame, df)
     
-    # Synchronise the plots that were created by the strategy to an external wiki site for publishing.
+    # Create the markdown pages with the links to the plots (Special function for dynamic pairs lists)
+    create_pages()
+
+    # Synchronise the plots and pages that were created by the strategy to an external wiki site for publishing.
     sync_plots()
+    sync_pages()
 
 if __name__ == "__main__":
     main()

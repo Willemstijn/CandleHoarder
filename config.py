@@ -5,13 +5,10 @@ from binance.client import Client
 import secrets
 
 # Installation directory.
-dir = "/opt/CandleHoarder/"
+dir = "C:/Users/BWN/SPLW_outlook_com/OneDrive/CodeRepository/CandleHoarder/"
 
 # Enter the location where the databases should exist  be created.
 data_location = "./data/"
-
-# Enter the location for the plot export to the external wiki site plot directory
-wiki = "/var/www/html/willemstijn.github.io/content/plots/"
 
 # Select a timeframe to watch on.
 # Available timeframes are: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M.
@@ -26,6 +23,12 @@ candle_history = 2000
 # Client key & secret for downloading data through the API exchange.
 # See the secrets.py file for actual keys.
 client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
+
+# Enter the location for the plot export to the external wiki site plot directory
+wiki = "/var/www/html/willemstijn.github.io/content/plots/"
+
+# Determine the list of strategies that should be plotted
+plots = ["mayer_multiple","bull_support_band","moving_averages","supertrend","pi_cycle"]
 
 symbols = ["BTCUSDT",
         "ETHUSDT",
