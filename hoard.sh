@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 /opt/CandheHoarder/hoard.py
+python3 /opt/CandleHoarder/hoard.py
