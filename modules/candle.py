@@ -100,7 +100,7 @@ def download_candle_history(symbol, time_frame):
 def download_last_candle(symbol, time_frame, is_entry):
     """
     This function checks for the last database entry and then downloads the candles from that entry on.
-    If the last entry does not exist within the last 100 (maximum) candles, then assume something went wrong 
+    If the last entry does not exist within the configured candle lookback period (config), then assume something went wrong 
     and recreate the complete database from scratch.
     """
 
@@ -135,7 +135,7 @@ def download_last_candle(symbol, time_frame, is_entry):
         interval = Client.KLINE_INTERVAL_1MONTH
 
     # After determining the timeframe get candle data (klines) with help of the binance Python module.
-    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=300)
+    last_candles = client.get_klines(symbol=symbol, interval=interval, limit=candle_lookback)
 
     # Pop last entry from list. This candle is not closed but active.
     last_candles.pop(-1)
@@ -225,7 +225,8 @@ def check_candle_data(symbol, time_frame):
     # Change the <sqlite3.Cursor object at XXXX> an actual readable last_entry variable
     try:
         last_entry = c.fetchall()[0][0]
-        # print("Last entry is: " + str(last_entry))
+        humandate = datetime.fromtimestamp(last_entry).strftime("%Y%m%d")
+        print("Last entry for " + symbol + " is: " + str(humandate))
         return last_entry
     except:
         # No data in database. Make placeholder label. Then fetch all missing data from the exchange.

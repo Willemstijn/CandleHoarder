@@ -49,6 +49,13 @@ BINANCE_API_SECRET = ""
 
 This file is not here by default but should be made manually.
 
+## Packages
+
+This program uses the following packages:
+
+* python-binance (https://pypi.org/project/python-binance/)
+* schedule (https://pypi.org/project/schedule/)
+* 
 ## Misc
 
 Read: 

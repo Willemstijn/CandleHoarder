@@ -4,8 +4,89 @@
 from binance.client import Client
 import secrets
 
+# Installation directory.
+dir = "/opt/CandleHoarder/"
+
 # Enter the location where the databases should exist  be created.
 data_location = "./data/"
+
+# Enter the location for the plot export to the external wiki site plot directory
+wiki = "/var/www/html/willemstijn.github.io/content/plots/"
+
+# Select a timeframe to watch on.
+# Available timeframes are: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M.
+time_frames = ["1d"]
+
+# Candle lookback period for when fetching candle updates.
+candle_lookback = 10
+
+# Enter amount of historical data to fetch for initial candle data download.
+candle_history = 2000
+
+# Client key & secret for downloading data through the API exchange.
+# See the secrets.py file for actual keys.
+client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
+
+symbols = ["BTCUSDT",
+        "ETHUSDT",]
+#         "BNBUSDT",
+#         "SOLUSDT",
+#         "ADAUSDT",
+#         "XRPUSDT",
+#         "LUNAUSDT",
+#         "DOTUSDT",
+#         "AVAXUSDT",
+#         "DOGEUSDT",
+#         "SHIBUSDT",
+#         "MATICUSDT",
+#         "ALGOUSDT",
+#         "LTCUSDT",
+#         "LINKUSDT",
+#         "DAIUSDT",
+#         "NEARUSDT",
+#         "BCHUSDT",
+#         "ATOMUSDT",
+#         "TRXUSDT",
+#         "XLMUSDT",
+#         "FTMUSDT",
+#         "MANAUSDT",
+#         "AXSUSDT",
+#         "HBARUSDT",
+#         "VETUSDT",
+#         "FTTUSDT",
+#         "SANDUSDT",
+#         "ICPUSDT",
+#         "FILUSDT",
+#         "THETAUSDT",
+#         "EGLDUSDT",
+#         "ETCUSDT",
+#         "HNTUSDT",
+#         "XMRUSDT",
+#         "XTZUSDT",
+#         "AAVEUSDT",
+#         "KLAYUSDT",
+#         "ONEUSDT",
+#         "GRTUSDT",
+#         "GALAUSDT",
+#         "EOSUSDT",
+#         "CAKEUSDT",
+#         "STXUSDT",
+#         "FLOWUSDT",
+#         "BTTUSDT",
+#         "LRCUSDT",
+#         "CRVUSDT",
+#         "KSMUSDT",
+#         "MKRUSDT",
+#         "ENJUSDT",
+#         "QNTUSDT",
+#         "XECUSDT",
+#         "AMPUSDT",
+#         "ZECUSDT",
+#         "UNIUSDT",
+#         "YFIUSDT",
+#         "COMPUSDT",
+#         "SUSHIUSDT",
+# ]
 
 # Enter all the crypto pairs you want to watch in this array.
 # symbols = ["BTCUSDT", "ETHUSDT", "ADAUSDT", "XRPUSDT"]
@@ -16,74 +97,3 @@ data_location = "./data/"
 #     # BTC quote
 #     "1INCHBTC","AAVEBTC","ACABTC","ACHBTC","ACMBTC","ADABTC","ADXBTC","AERGOBTC","AGIXBTC","AGLDBTC","AIONBTC","ALCXBTC","ALGOBTC","ALICEBTC","ALPACABTC","ALPHABTC","ALPINEBTC","AMBBTC","AMPBTC","ANCBTC","ANKRBTC","ANTBTC","APEBTC","API3BTC","ARBTC","ARDRBTC","ARKBTC","ARPABTC","ASRBTC","ASTBTC","ASTRBTC","ATABTC","ATMBTC","ATOMBTC","AUCTIONBTC","AUDIOBTC","AUTOBTC","AVABTC","AVAXBTC","AXSBTC","BADGERBTC","BAKEBTC","BALBTC","BANDBTC","BARBTC","BATBTC","BCHBTC","BEAMBTC","BELBTC","BETABTC","BICOBTC","BLZBTC","BNBBTC","BNTBTC","BNXBTC","BONDBTC","BRDBTC","BTCSTBTC","BTGBTC","BTSBTC","C98BTC","CAKEBTC","CELOBTC","CELRBTC","CFXBTC","CHESSBTC","CHRBTC","CHZBTC","CITYBTC","CLVBTC","COMPBTC","COSBTC","COTIBTC","CRVBTC","CTKBTC","CTSIBTC","CTXCBTC","CVCBTC","CVXBTC","DARBTC","DASHBTC","DATABTC","DCRBTC","DEGOBTC","DGBBTC","DIABTC","DNTBTC","DOCKBTC","DODOBTC","DOGEBTC","DOTBTC","DREPBTC","DUSKBTC","DYDXBTC","EGLDBTC","ELFBTC","ENJBTC","ENSBTC","EOSBTC","ETCBTC","ETHBTC","EZBTC","FARMBTC","FETBTC","FIDABTC","FILBTC","FIOBTC","FIROBTC","FISBTC","FLMBTC","FLOWBTC","FLUXBTC","FORBTC","FORTHBTC","FRONTBTC","FTMBTC","FTTBTC","FXSBTC","GALBTC","GALABTC","GASBTC","GLMBTC","GLMRBTC","GMTBTC","GNOBTC","GOBTC","GRSBTC","GRTBTC","GTCBTC","GTOBTC","HARDBTC","HBARBTC","HIGHBTC","HIVEBTC","HNTBTC","ICPBTC","ICXBTC","IDEXBTC","ILVBTC","IMXBTC","INJBTC","IOSTBTC","IOTABTC","IOTXBTC","IRISBTC","JASMYBTC","JOEBTC","JSTBTC","JUVBTC","KAVABTC","KDABTC","KLAYBTC","KMDBTC","KNCBTC","KSMBTC","LAZIOBTC","LDOBTC","LINABTC","LINKBTC","LITBTC","LOKABTC","LOOMBTC","LPTBTC","LRCBTC","LSKBTC","LTCBTC","LTOBTC","MANABTC","MATICBTC","MBOXBTC","MCBTC","MDABTC","MDTBTC","MDXBTC","MINABTC","MIRBTC","MITHBTC","MKRBTC","MLNBTC","MOBBTC","MOVRBTC","MTLBTC","MULTIBTC","NASBTC","NAVBTC","NEARBTC","NEBLBTC","NEOBTC","NEXOBTC","NKNBTC","NMRBTC","NULSBTC","NXSBTC","OAXBTC","OCEANBTC","OGBTC","OGNBTC","OMBTC","OMGBTC","ONEBTC","ONGBTC","ONTBTC","OPBTC","ORNBTC","OXTBTC","PAXGBTC","PEOPLEBTC","PERLBTC","PERPBTC","PHABTC","PHBBTC","PIVXBTC","PLABTC","PNTBTC","POLSBTC","POLYBTC","PONDBTC","PORTOBTC","POWRBTC","PROMBTC","PSGBTC","PYRBTC","QIBTC","QKCBTC","QLCBTC","QNTBTC","QSPBTC","QTUMBTC","QUICKBTC","RADBTC","RAMPBTC","RAREBTC","RENBTC","REPBTC","REQBTC","RIFBTC","RLCBTC","RNDRBTC","ROSEBTC","RUNEBTC","RVNBTC","SANDBTC","SANTOSBTC","SCBTC","SCRTBTC","SFPBTC","SKLBTC","SNMBTC","SNTBTC","SNXBTC","SOLBTC","SRMBTC","SSVBTC","STEEMBTC","STMXBTC","STORJBTC","STPTBTC","STRAXBTC","STXBTC","SUPERBTC","SUSHIBTC","SXPBTC","SYSBTC","TCTBTC","TFUELBTC","THETABTC","TKOBTC","TLMBTC","TOMOBTC","TORNBTC","TRBBTC","TRIBEBTC","TRUBTC","TRXBTC","TVKBTC","TWTBTC","UMABTC","UNFIBTC","UNIBTC","UTKBTC","VETBTC","VGXBTC","VIBBTC","VIDTBTC","VITEBTC","VOXELBTC","WABIBTC","WANBTC","WAVESBTC","WAXPBTC","WBTCBTC","WINGBTC","WOOBTC","WRXBTC","WTCBTC","XEMBTC","XLMBTC","XMRBTC","XNOBTC","XRPBTC","XTZBTC","XVGBTC","XVSBTC","YFIBTC","YFIIBTC","YGGBTC","ZECBTC","ZENBTC","ZILBTC","ZRXBTC"
 # ]
-
-symbols = ["BTCUSDT",
-        "ETHUSDT",
-        "BNBUSDT",
-        "SOLUSDT",
-        "ADAUSDT",
-        "XRPUSDT",
-        "LUNAUSDT",
-        "DOTUSDT",
-        "AVAXUSDT",
-        "DOGEUSDT",
-        "SHIBUSDT",
-        "MATICUSDT",
-        "ALGOUSDT",
-        "LTCUSDT",
-        "LINKUSDT",
-        "DAIUSDT",
-        "NEARUSDT",
-        "BCHUSDT",
-        "ATOMUSDT",
-        "TRXUSDT",
-        "XLMUSDT",
-        "FTMUSDT",
-        "MANAUSDT",
-        "AXSUSDT",
-        "HBARUSDT",
-        "VETUSDT",
-        "FTTUSDT",
-        "SANDUSDT",
-        "ICPUSDT",
-        "FILUSDT",
-        "THETAUSDT",
-        "EGLDUSDT",
-        "ETCUSDT",
-        "HNTUSDT",
-        "XMRUSDT",
-        "XTZUSDT",
-        "AAVEUSDT",
-        "KLAYUSDT",
-        "ONEUSDT",
-        "GRTUSDT",
-        "GALAUSDT",
-        "EOSUSDT",
-        "CAKEUSDT",
-        "STXUSDT",
-        "FLOWUSDT",
-        "BTTUSDT",
-        "LRCUSDT",
-        "CRVUSDT",
-        "KSMUSDT",
-        "MKRUSDT",
-        "ENJUSDT",
-        "QNTUSDT",
-        "XECUSDT",
-        "AMPUSDT",
-        "ZECUSDT",
-        "UNIUSDT",
-        "YFIUSDT",
-        "COMPUSDT",
-        "SUSHIUSDT",
-]
-
-# Select a timeframe to watch on.
-# Available timeframes are: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M.
-time_frames = ["1d"]
-
-# Enter amount of historical data to fetch for initial candle data download
-candle_history = 10
-
-# Client key & secret for downloading data through the API exchange
-client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
