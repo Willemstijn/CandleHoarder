@@ -1,5 +1,6 @@
 # Import modules.
 import sys
+import logging
 from config import *
 from modules.database import *
 from modules.candle import *
@@ -13,7 +14,8 @@ sys.path.insert(1, "./modules/")
 
 def main():
     """Walk throug the symbols and timeframes and create the databases and tables if necessary."""
-    print("Starting to hoard...")
+    # print("Starting to hoard...")
+    logging.warning("Start the hoard...")
     for symbol in symbols:
         for time_frame in time_frames:
             # === THIS WHOLE SECTION BELOW IS COMMENTED OUT BUT IS GOOD!

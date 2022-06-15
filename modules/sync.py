@@ -20,7 +20,7 @@ def sync_plots():
     """
     print("Copying plots to wiki")
     src = "{}mdwiki/plots".format(dir)
-    dst = wiki
+    dst = wiki+"plots/"
     copy_tree(src, dst)
 
 def sync_pages():

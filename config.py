@@ -5,7 +5,10 @@ from binance.client import Client
 import secrets
 
 # Installation directory.
-dir = "C:/Users/BWN/SPLW_outlook_com/OneDrive/CodeRepository/CandleHoarder/"
+# Windows dir
+# dir = "C:/Users/BWN/SPLW_outlook_com/OneDrive/CodeRepository/CandleHoarder/"
+# Linux dir
+dir = "/home/bas/Dropbox/CodeRepository/CandleHoarder/"
 
 # Enter the location where the databases should exist  be created.
 data_location = "./data/"
@@ -25,7 +28,7 @@ candle_history = 2000
 client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
 
 # Enter the location for the plot export to the external wiki site plot directory
-wiki = "/var/www/html/willemstijn.github.io/content/plots/"
+wiki = "/var/www/html/willemstijn.github.io/content/"
 
 # Determine the list of strategies that should be plotted
 plots = ["mayer_multiple","bull_support_band","moving_averages","supertrend","pi_cycle"]
@@ -45,7 +48,6 @@ symbols = ["BTCUSDT",
          "ALGOUSDT",
          "LTCUSDT",
          "LINKUSDT",
-         "DAIUSDT",
          "NEARUSDT",
          "BCHUSDT",
          "ATOMUSDT",
