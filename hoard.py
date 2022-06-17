@@ -1,5 +1,9 @@
+#!/usr/bin/python
+# coding=utf-8
+
 # Import modules.
 import sys
+import logging
 from config import *
 from modules.database import *
 from modules.candle import *
@@ -13,10 +17,11 @@ sys.path.insert(1, "./modules/")
 
 def main():
     """Walk throug the symbols and timeframes and create the databases and tables if necessary."""
-    print("Starting to hoard...")
+    logging.warning("Starting hoarding of candles...")
     for symbol in symbols:
         for time_frame in time_frames:
             # === THIS WHOLE SECTION BELOW IS COMMENTED OUT BUT IS GOOD!
+            logging.warning("Checking " + symbol + " on " + time_frame + ".")
             check_db(symbol, time_frame)
             is_entry = check_candle_data(symbol, time_frame)
             
@@ -30,7 +35,6 @@ def main():
             df = create_dataframe(symbol, time_frame)
             
             # Define the strategies you want to test in the section below:
-            # test(symbol, time_frame, df)
             mayer_multiple(symbol, time_frame, df)
             bull_support_band(symbol, time_frame, df)
             moving_averages(symbol, time_frame, df)
@@ -43,6 +47,8 @@ def main():
     # Synchronise the plots and pages that were created by the strategy to an external wiki site for publishing.
     sync_plots()
     sync_pages()
+
+logging.warning("End of hoarding, everything seemed succesfull...")
 
 if __name__ == "__main__":
     main()
