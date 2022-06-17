@@ -7,8 +7,8 @@ import secrets
 # Installation directory.
 dir = "/opt/CandleHoarder/"
 
-# Enter the location where the databases should exist  be created.
-data_location = "./data/"
+# Enter the location where the databases should exist be created.
+data_location = dir+"data/"
 
 # Enter the location for the plot export to the external wiki site plot directory
 wiki = "/var/www/html/willemstijn.github.io/content/plots/"
@@ -42,7 +42,6 @@ symbols = ["BTCUSDT",
          "ALGOUSDT",
          "LTCUSDT",
          "LINKUSDT",
-         "DAIUSDT",
          "NEARUSDT",
          "BCHUSDT",
          "ATOMUSDT",
