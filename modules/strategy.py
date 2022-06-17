@@ -83,7 +83,7 @@ def mayer_multiple(symbol, time_frame, df):
         plt.legend(loc='upper left')
 
         plt.tight_layout()
-        plt.savefig(f'{dir}mdwiki/plots/mayer-{symbol}-{time_frame}.png')
+        plt.savefig(f'{dir}mdwiki/plots/mayer_multiple-{symbol}-{time_frame}.png')
         plt.cla()
         plt.close()
     elif len(df) < 201:
@@ -141,7 +141,7 @@ def bull_support_band(symbol, time_frame, df):
     plt.legend(loc='upper left')
 
     plt.tight_layout()
-    plt.savefig(f'{dir}mdwiki/plots/bullsupport-{symbol}-{time_frame}.png')
+    plt.savefig(f'{dir}mdwiki/plots/bull_support_band-{symbol}-{time_frame}.png')
     plt.cla()
     plt.close()
 
@@ -203,7 +203,7 @@ def moving_averages(symbol, time_frame, df):
         plt.legend(loc='upper left')
 
         plt.tight_layout()
-        plt.savefig(f'{dir}mdwiki/plots/averages-{symbol}-{time_frame}.png')
+        plt.savefig(f'{dir}mdwiki/plots/moving_averages-{symbol}-{time_frame}.png')
         plt.cla()
         plt.close()
     elif len(df) < 998:
@@ -380,7 +380,7 @@ def pi_cycle(symbol, time_frame, df):
         plt.legend(loc='upper left')
 
         plt.tight_layout()
-        plt.savefig(f'{dir}mdwiki/plots/picycle-{symbol}-{time_frame}.png')
+        plt.savefig(f'{dir}mdwiki/plots/pi_cycle-{symbol}-{time_frame}.png')
         plt.cla()
         plt.close()
     elif len(df) < 998:
