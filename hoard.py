@@ -45,6 +45,7 @@ def main():
     # Synchronise the plots and pages that were created by the strategy to an external wiki site for publishing.
     sync_plots()
     sync_pages()
+    sync_git()
 
 logging.warning("End of hoarding, everything seemed succesfull...")
 
