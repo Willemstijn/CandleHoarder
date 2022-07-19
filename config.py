@@ -2,13 +2,13 @@
 # This file contains all configurations for the hoarder.
 
 from binance.client import Client
-import secrets
+import private
 
 # Installation directory.
 # Windows dir
 # dir = "C:/Users/BWN/SPLW_outlook_com/OneDrive/CodeRepository/CandleHoarder/"
 # Linux dir
-dir = "/opt/CandleHoarder/"
+dir = "/home/bas/CandleHoarder/"
 
 # Enter the location where the databases should exist be created.
 # data_location = dir+"data/"
@@ -26,10 +26,11 @@ candle_history = 2000
 
 # Client key & secret for downloading data through the API exchange.
 # See the secrets.py file for actual keys.
-client = Client(secrets.BINANCE_API_KEY, secrets.BINANCE_API_SECRET)
+client = Client(private.BINANCE_API_KEY, private.BINANCE_API_SECRET)
 
 # Enter the base location for the plot export to the external wiki/website site plot & pages directory
-wiki = "/var/www/html/willemstijn.github.io/"
+#wiki = "/var/www/html/"
+wiki = "/home/bas/html/"
 
 # Determine the list of strategies that should be plotted
 plots = ["mayer_multiple","bull_support_band","moving_averages","supertrend","pi_cycle"]

@@ -4,5 +4,5 @@ pandas
 pandas-ta
 python-binance
 ta
-ta-lib
+#ta-lib
 matplotlib
